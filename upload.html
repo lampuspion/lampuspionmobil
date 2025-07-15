@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Gambar & Teks Berjalan</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background: #f0f0f0;
+      padding: 20px;
+    }
+
+    .main-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #333;
+    }
+
+    input[type="text"], input[type="number"], textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: #007acc;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .upload-box {
+      border: 2px dashed #00aaff;
+      padding: 30px 20px;
+      text-align: center;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .upload-box input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+    }
+
+    .file-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .file-item img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-right: 10px;
+    }
+
+    .file-info {
+      flex: 1;
+      font-size: 13px;
+      word-break: break-all;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .file-name {
+      font-weight: bold;
+    }
+
+    .delete-btn, .edit-btn, .update-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      color: red;
+    }
+
+    .edit-btn {
+      color: green;
+    }
+
+    .update-btn {
+      color: blue;
+    }
+
+    .progress {
+      height: 4px;
+      background: #00aaff;
+      border-radius: 4px;
+      margin-top: 5px;
+      width: 0;
+      transition: width 0.3s ease;
+    }
+
+    /* Responsive Layout */
+    @media (max-width: 600px) {
+      .file-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .file-item img {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      .file-info {
+        flex: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+  <!-- Blog Upload -->
+  <div class="container">
+    <h3>Upload Blog</h3>
+    <input type="text" id="blog-title" placeholder="Masukkan Judul Blog">
+    <textarea id="blog-description" placeholder="Masukkan Deskripsi Blog"></textarea>
+    <div class="upload-box">
+      <strong>Browse</strong> atau drop gambar blog di sini<br>
+      <small>*Supported: .png, .jpg, .webp</small>
+      <input type="file" id="blog-image" accept="image/*">
+    </div>
+    <button id="upload-blog">Upload Blog</button>
+    <h4>List of Blogs</h4>
+    <ul id="blog-list" class="file-list"></ul>
+  </div>
+
+  <!-- Gallery Upload -->
+  <div class="container">
+    <h3>Upload Gallery</h3>
+    <div class="upload-box">
+      <strong>Browse</strong> atau drop gambar gallery di sini<br>
+      <small>*Supported: .png, .jpg, .webp</small>
+      <input type="file" id="gallery-image" multiple accept="image/*">
+    </div>
+    <button id="upload-gallery">Upload Gallery</button>
+    <h4>List of Gallery Images</h4>
+    <ul id="gallery-list" class="file-list"></ul>
+  </div>
+
+  <!-- Product Upload -->
+  <div class="container">
+    <h3>Upload Product</h3>
+    <input type="text" id="product-name" placeholder="Nama Produk">
+    <input type="number" id="product-price" placeholder="Harga Produk">
+    <div class="upload-box">
+      <strong>Browse</strong> atau drop gambar produk di sini<br>
+      <small>*Supported: .png, .jpg, .webp</small>
+      <input type="file" id="product-image" accept="image/*">
+    </div>
+    <button id="upload-product">Upload Product</button>
+    <h4>List of Products</h4>
+    <ul id="product-list" class="file-list"></ul>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBuV49MOc4OAFOBLJEUd-6bVEr6XCWWfkA",
+    authDomain: "preset-62582.firebaseapp.com",
+    databaseURL: "https://preset-62582-default-rtdb.firebaseio.com",
+    projectId: "preset-62582",
+    storageBucket: "preset-62582.appspot.com",
+    messagingSenderId: "227329859828",
+    appId: "1:227329859828:web:b29f91c926b9c726cabea1"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const storage = firebase.storage();
+  const db = firebase.database();
+
+  // Blog Upload
+  document.getElementById("upload-blog").addEventListener("click", function () {
+    const title = document.getElementById("blog-title").value;
+    const description = document.getElementById("blog-description").value;
+    const file = document.getElementById("blog-image").files[0];
+
+    if (title && description && file) {
+      const storageRef = storage.ref('blogs/' + file.name);
+      const uploadTask = storageRef.put(file);
+
+      uploadTask.on('state_changed', function(snapshot) {
+        const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        document.getElementById('progress-bar').style.width = percent + '%';
+      }, function(error) {
+        alert("Upload gagal: " + error.message);
+      }, function() {
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          const blogRef = db.ref('blogs').push();
+          blogRef.set({
+            title: title,
+            description: description,
+            imageUrl: downloadURL,
+            timestamp: Date.now()
+          });
+          alert("Blog berhasil diupload!");
+          loadBlogs();  // Reload the blog list
+        });
+      });
+    } else {
+      alert("Mohon lengkapi semua data!");
+    }
+  });
+
+  // Load and display blogs from Firebase
+  function loadBlogs() {
+    const blogList = document.getElementById('blog-list');
+    blogList.innerHTML = '';
+    db.ref('blogs').once('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        const blog = childSnapshot.val();
+        const li = document.createElement('li');
+        li.classList.add('file-item');
+        li.innerHTML = `
+          <div class="file-info">
+            <img src="${blog.imageUrl}" width="50" height="50">
+            <div class="file-name">Judul: <span id="title-${childSnapshot.key}">${blog.title}</span></div>
+            <div>Deskripsi: <span id="description-${childSnapshot.key}">${blog.description}</span></div>
+          </div>
+          <button class="edit-btn" id="edit-btn-${childSnapshot.key}" onclick="editBlog('${childSnapshot.key}')">Edit</button>
+          <button class="delete-btn" onclick="deleteBlog('${childSnapshot.key}', '${blog.imageUrl}')">Hapus</button>
+        `;
+        blogList.appendChild(li);
+      });
+    });
+  }
+
+  // Edit Blog
+  function editBlog(key) {
+    const titleSpan = document.getElementById(`title-${key}`);
+    const descriptionSpan = document.getElementById(`description-${key}`);
+
+    // Replace text with inputs
+    titleSpan.innerHTML = `<input type="text" id="edit-title-${key}" value="${titleSpan.innerHTML}" />`;
+    descriptionSpan.innerHTML = `<input type="text" id="edit-description-${key}" value="${descriptionSpan.innerHTML}" />`;
+
+    const editBtn = document.getElementById(`edit-btn-${key}`);
+    editBtn.innerHTML = "Update";
+    editBtn.setAttribute('onclick', `updateBlog('${key}')`);
+  }
+
+  // Update Blog
+  function updateBlog(key) {
+    const newTitle = document.getElementById(`edit-title-${key}`).value;
+    const newDescription = document.getElementById(`edit-description-${key}`).value;
+
+    if (newTitle && newDescription) {
+      // Update the blog data in Firebase
+      db.ref('blogs/' + key).update({
+        title: newTitle,
+        description: newDescription
+      }).then(() => {
+        alert("Blog berhasil diperbarui!");
+        loadBlogs(); // Reload the blog list
+      }).catch((error) => {
+        alert("Gagal memperbarui blog: " + error.message);
+      });
+    } else {
+      alert("Mohon lengkapi data!");
+    }
+  }
+
+  // Delete Blog
+  function deleteBlog(key, imageUrl) {
+    if (confirm("Apakah Anda yakin ingin menghapus blog ini?")) {
+      const storageRef = firebase.storage().refFromURL(imageUrl);
+      storageRef.delete().then(() => {
+        db.ref('blogs/' + key).remove().then(() => {
+          loadBlogs();
+        });
+      }).catch(error => {
+        alert("Gagal menghapus: " + error.message);
+      });
+    }
+  }
+
+  // Gallery Upload (no edit feature)
+  document.getElementById("upload-gallery").addEventListener("click", function () {
+    const files = document.getElementById("gallery-image").files;
+
+    if (files.length > 0) {
+      Array.from(files).forEach(file => {
+        const storageRef = storage.ref('gallery/' + file.name);
+        const uploadTask = storageRef.put(file);
+
+        uploadTask.on('state_changed', function(snapshot) {
+          const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        }, function(error) {
+          alert("Upload gagal: " + error.message);
+        }, function() {
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            const galleryRef = db.ref('gallery').push();
+            galleryRef.set({
+              imageUrl: downloadURL,
+              timestamp: Date.now()
+            });
+            alert("Gallery berhasil diupload!");
+            loadGallery(); // Reload the gallery list
+          });
+        });
+      });
+    } else {
+      alert("Pilih gambar terlebih dahulu!");
+    }
+  });
+
+  // Load and display gallery images from Firebase
+  function loadGallery() {
+    const galleryList = document.getElementById('gallery-list');
+    galleryList.innerHTML = '';
+    db.ref('gallery').once('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        const gallery = childSnapshot.val();
+        const li = document.createElement('li');
+        li.classList.add('file-item');
+        li.innerHTML = `
+          <div class="file-info">
+            <img src="${gallery.imageUrl}" width="50" height="50">
+            <div>Gallery Image</div>
+          </div>
+          <button class="delete-btn" onclick="deleteGallery('${childSnapshot.key}', '${gallery.imageUrl}')">Hapus</button>
+        `;
+        galleryList.appendChild(li);
+      });
+    });
+  }
+
+  // Product Upload (no edit feature)
+  document.getElementById("upload-product").addEventListener("click", function () {
+    const name = document.getElementById("product-name").value;
+    const price = document.getElementById("product-price").value;
+    const file = document.getElementById("product-image").files[0];
+
+    if (name && price && file) {
+      const storageRef = storage.ref('products/' + file.name);
+      const uploadTask = storageRef.put(file);
+
+      uploadTask.on('state_changed', function(snapshot) {
+        const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      }, function(error) {
+        alert("Upload gagal: " + error.message);
+      }, function() {
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          const productRef = db.ref('products').push();
+          productRef.set({
+            name: name,
+            price: price,
+            imageUrl: downloadURL,
+            timestamp: Date.now()
+          });
+          alert("Produk berhasil diupload!");
+          loadProducts(); // Reload the product list
+        });
+      });
+    } else {
+      alert("Mohon lengkapi semua data!");
+    }
+  });
+
+  // Load and display products from Firebase
+  function loadProducts() {
+    const productList = document.getElementById('product-list');
+    productList.innerHTML = '';
+    db.ref('products').once('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        const product = childSnapshot.val();
+        const li = document.createElement('li');
+        li.classList.add('file-item');
+        li.innerHTML = `
+          <div class="file-info">
+            <img src="${product.imageUrl}" width="50" height="50">
+            <div class="file-name">Nama Produk: ${product.name}</div>
+            <div>Harga: ${product.price}</div>
+          </div>
+          <button class="delete-btn" onclick="deleteProduct('${childSnapshot.key}', '${product.imageUrl}')">Hapus</button>
+        `;
+        productList.appendChild(li);
+      });
+    });
+  }
+
+  // Delete Product
+  function deleteProduct(key, imageUrl) {
+    if (confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
+      const storageRef = firebase.storage().refFromURL(imageUrl);
+      storageRef.delete().then(() => {
+        db.ref('products/' + key).remove().then(() => {
+          loadProducts();
+        });
+      }).catch(error => {
+        alert("Gagal menghapus: " + error.message);
+      });
+    }
+  }
+
+  // Load initial data on page load
+  loadBlogs();
+  loadGallery();
+  loadProducts();
+
+</script>
+
+</body>
+</html>
