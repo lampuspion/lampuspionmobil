@@ -4103,12 +4103,14 @@ kbd {
 .blog-card .blog-header-info {
   margin-bottom: 25px;
   width: 100%;
+  height: 350px;
   flex-shrink: 0;
   overflow: hidden;
 }
 .blog-card .blog-header-info img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   transition: all 0.5s ease-in-out;
 }
 .blog-card .blog-body-info {
@@ -4890,14 +4892,48 @@ kbd {
 
 .gallery {
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
-  grid-auto-rows: minmax(350px, 200px);
+  grid-gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-auto-rows: 250px;
   grid-auto-flow: dense;
+  padding: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-auto-rows: 200px;
+    grid-gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 180px;
+  }
 }
 .gallery .item {
   overflow: hidden;
   position: relative;
+  border-radius: 8px;
+  background: #1a1a1a;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gallery .item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(255, 61, 36, 0.2);
 }
 .gallery .frame {
   position: absolute;
@@ -4923,22 +4959,57 @@ kbd {
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
-  transition: 1s;
+  transition: all 0.8s ease;
   transition-delay: 0.2s;
+  opacity: 0;
+  animation: fadeInImage 0.6s ease forwards;
+}
+
+@keyframes fadeInImage {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Loading skeleton */
+.gallery .item.loading {
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 .gallery .item:hover img {
   transform: scale(1.2);
   opacity: 1;
 }
-.gallery .vertical {
-  grid-column: span 2;
-}
-.gallery .horizontal {
+.gallery .tall {
   grid-row: span 2;
+}
+.gallery .wide {
+  grid-column: span 2;
 }
 .gallery .big {
   grid-column: span 2;
   grid-row: span 2;
+}
+
+@media (max-width: 768px) {
+  .gallery .wide,
+  .gallery .big {
+    grid-column: span 1;
+  }
+  .gallery .tall,
+  .gallery .big {
+    grid-row: span 1;
+  }
 }
 
 .video-gallery .gallery-img-content {

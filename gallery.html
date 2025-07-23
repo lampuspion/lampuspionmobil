@@ -31,6 +31,7 @@
     appId: "1:227329859828:web:b29f91c926b9c726cabea1"
   };
   firebase.initializeApp(firebaseConfig);
+  
 </script>
 </head>
 <body>
@@ -183,6 +184,9 @@
 <!-- Start Gallery -->
 <div class="ak-height-75 ak-height-lg-80"></div>
 <section class="container">
+<div class="gallery-info" style="text-align: center; margin-bottom: 30px;">
+<p id="gallery-counter" style="color: #d3d3d3; font-size: 16px;">Loading gallery...</p>
+</div>
 <div class="gallery" id="static-thumbnails">
 <div class="item">
 <a href="assets/img/gallery_1.jpg">
@@ -457,24 +461,89 @@ Menyediakan Berbagai Projecktor Biled DRL..</p>
 
 <script>
   const galleryContainer = document.getElementById('static-thumbnails');
-  const dbRef = firebase.database().ref("gallery");
+  const db = firebase.database();
 
-  dbRef.once("value", (snapshot) => {
-    galleryContainer.innerHTML = ""; // Kosongkan kontainer
-    snapshot.forEach((child) => {
-      const imageUrl = child.val();
+  // Show loading skeletons
+  function showLoadingSkeletons() {
+    const skeletonHTML = `
+      <div class="item loading"></div>
+      <div class="item wide loading"></div>
+      <div class="item loading"></div>
+      <div class="item tall loading"></div>
+      <div class="item loading"></div>
+      <div class="item big loading"></div>
+      <div class="item loading"></div>
+      <div class="item loading"></div>
+    `;
+    galleryContainer.innerHTML = skeletonHTML;
+  }
+
+  // Start with loading skeletons
+  showLoadingSkeletons();
+  
+  // Ambil data dari Realtime Database 'gallery'
+  db.ref('gallery').once('value', function(snapshot) {
+    // Clear loading skeletons
+    galleryContainer.innerHTML = "";
+    
+    let index = 0;
+    let imagesLoaded = 0;
+    const totalImages = snapshot.numChildren();
+    
+    // Update counter
+    const counterElement = document.getElementById('gallery-counter');
+    if (totalImages === 0) {
+      counterElement.textContent = 'No images found in gallery.';
+      return;
+    }
+    counterElement.textContent = `Gallery (${totalImages} images)`;
+    
+    snapshot.forEach(function(childSnapshot) {
+      const data = childSnapshot.val();
+      const imageUrl = data.imageUrl;
+
+      console.log(imageUrl);
+      
+      // Tentukan class grid berdasarkan pattern
+      let gridClass = '';
+      if (index % 7 === 0) gridClass = 'big';
+      else if (index % 4 === 0) gridClass = 'wide';
+      else if (index % 5 === 0) gridClass = 'tall';
+      
+      // Create item with delayed animation
+      const itemDiv = document.createElement('div');
+      itemDiv.className = `item ${gridClass}`;
+      itemDiv.style.animationDelay = `${index * 0.1}s`;
+      
       const html = `
-        <div class="item">
-          <a href="${imageUrl}">
-            <img src="${imageUrl}" alt="Photo" />
-            <div class="frame gallery-hover-icon">
-              <span><img src="assets/img/zoom.svg" alt="zoom"></span>
-            </div>
-          </a>
-        </div>
+        <a href="${imageUrl}" target="_blank">
+          <img src="${imageUrl}" alt="Photo" onload="this.style.opacity=1" />
+          <div class="frame gallery-hover-icon">
+            <span><img src="assets/img/zoom.svg" alt="zoom"></span>
+          </div>
+        </a>
       `;
-      galleryContainer.innerHTML += html;
+      itemDiv.innerHTML = html;
+      galleryContainer.appendChild(itemDiv);
+      
+      index++;
     });
+    
+    // Initialize LightGallery after all elements are added
+    setTimeout(() => {
+      if (typeof lightGallery !== 'undefined') {
+        lightGallery(galleryContainer, {
+          plugins: [lgThumbnail, lgZoom],
+          speed: 500,
+          download: false,
+          selector: '.item a'
+        });
+      }
+    }, 100);
+    
+  }).catch((error) => {
+    console.error("Error getting data: ", error);
+    galleryContainer.innerHTML = '<p style="text-align: center; color: #ff3d24;">Error loading gallery. Please try again.</p>';
   });
 </script>
 </body>

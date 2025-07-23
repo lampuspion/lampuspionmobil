@@ -16,6 +16,23 @@
     <link rel="stylesheet" href="assets/css/plugins/aos.css" />
     <link rel="stylesheet" href="assets/css/plugins/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuV49MOc4OAFOBLJEUd-6bVEr6XCWWfkA",
+            authDomain: "preset-62582.firebaseapp.com",
+            databaseURL: "https://preset-62582-default-rtdb.firebaseio.com",
+            projectId: "preset-62582",
+            storageBucket: "preset-62582.appspot.com",
+            messagingSenderId: "227329859828",
+            appId: "1:227329859828:web:b29f91c926b9c726cabea1"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+    </script>
 </head>
 
 <body>
@@ -58,7 +75,7 @@
                                         <li>
                                             <a href="index.html" class="text-hover-animaiton">Main Home</a>
                                         </li>
-                                        
+
 
                                     </ul>
                                 </li>
@@ -68,11 +85,11 @@
                                 <li class="menu-item-has-children">
                                     <a href="services.html" class="text-hover-animaiton">Services</a>
                                     <ul>
-                                        
+
                                         <li>
                                             <a href="services-two.html" class="text-hover-animaiton">Services Two</a>
                                         </li>
-                                        
+
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children">
@@ -81,39 +98,39 @@
                                         <li>
                                             <a href="blog.html" class="text-hover-animaiton">Blog</a>
                                         </li>
-                                        
+
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="#" class="text-hover-animaiton nav-pages-item">Halaman</a>
                                     <ul>
-                                       
-                                            <a href="appointment.html" class="text-hover-animaiton">Buat Janji</a>
-                                        </li>
-                                        <li>
-                                            <a href="pricing.html" class="text-hover-animaiton">Harga Paket</a>
-                                        </li>
-                                        <li>
-                                            <a href="testimonial.html" class="text-hover-animaiton">Testimonial</a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery.html" class="text-hover-animaiton">Gallery </a>
-                                        </li>
-                                        <li>
-                                            <a href="video-gallery.html" class="text-hover-animaiton">Video Gallery </a>
-                                        </li>
-                                        <li>
-                                            <a href="video-gallery.html" class="text-hover-animaiton">Video Gallery </a>
-                                        </li>
-                                        <li>
-                                            <a href="faq.html" class="text-hover-animaiton">Faq</a>
-                                        </li>
-                                        
-                                    </ul>
+
+                                        <a href="appointment.html" class="text-hover-animaiton">Buat Janji</a>
                                 </li>
                                 <li>
-                                    <a href="contact-us.html" class="text-hover-animaiton">Contact</a>
+                                    <a href="pricing.html" class="text-hover-animaiton">Harga Paket</a>
                                 </li>
+                                <li>
+                                    <a href="testimonial.html" class="text-hover-animaiton">Testimonial</a>
+                                </li>
+                                <li>
+                                    <a href="gallery.html" class="text-hover-animaiton">Gallery </a>
+                                </li>
+                                <li>
+                                    <a href="video-gallery.html" class="text-hover-animaiton">Video Gallery </a>
+                                </li>
+                                <li>
+                                    <a href="video-gallery.html" class="text-hover-animaiton">Video Gallery </a>
+                                </li>
+                                <li>
+                                    <a href="faq.html" class="text-hover-animaiton">Faq</a>
+                                </li>
+
+                            </ul>
+                            </li>
+                            <li>
+                                <a href="contact-us.html" class="text-hover-animaiton">Contact</a>
+                            </li>
                             </ul>
                         </div>
 
@@ -147,16 +164,6 @@
                     <a href="/services.html">Single Blog</a>
                 </div>
             </div>
-            <div class="pb-5 pb-md-0">
-                <div class="next-prev-btn">
-                    <button class="prev-btn button">
-                        <img src="assets/img/prev.svg" alt="..."><span> prev</span>
-                    </button>
-                    <button class="next-btn button">
-                        <span>next</span> <img src="assets/img/next.svg" alt="..">
-                    </button>
-                </div>
-            </div>
         </div>
         <div class="primary-color-border"></div>
     </div>
@@ -173,7 +180,7 @@
                 <div class="ak-height-50 ak-height-lg-30"></div>
             </div>
             <div data-aos="fade-up" data-aos-delay="700">
-                <img src="assets/img/single-blog.jpg" class="img-fluid" alt="...">
+                <div id="featured-blog-image"></div>
                 <div class="ak-height-50 ak-height-lg-30"></div>
             </div>
 
@@ -191,49 +198,6 @@
                     commitment to a safer, smoother, and more reliable driving experience.</p>
                 <div class="ak-height-50 ak-height-lg-30"></div>
             </div>
-        </div>
-        <div class="single-blog-list" data-aos="fade-up">
-            <h4 class="single-blog-title">1. Safety on the Road:</h4>
-            <p class="single-blog-desp">
-                Safety should always be the top priority when it comes to your vehicle. Regular maintenance checks,
-                including brake inspections, tire rotations, and fluid top-ups, are vital for preventing potential
-                issues that could compromise your safety on the road. Don't wait for warning signs; be proactive in
-                keeping your vehicle's safety features in optimal condition.
-            </p>
-
-        </div>
-        <div class="single-blog-list" data-aos="fade-up">
-            <h4 class="single-blog-title">2. Longevity and Durability:</h4>
-            <p class="single-blog-desp">
-                Your car is a significant investment, and routine maintenance is the key to protecting that
-                investment.
-                Regular oil changes, filter replacements, and scheduled check-ups contribute to the longevity and
-                durability of your vehicle. Think of it as giving your car a prescription for a long and healthy
-                life on
-                the road.
-            </p>
-
-        </div>
-        <div class="single-blog-list" data-aos="fade-up">
-            <h4 class="single-blog-title">3. Improved Performance and Fuel Efficiency:</h4>
-            <p class="single-blog-desp">
-                A well-maintained car performs at its best. Regular tune-ups, air filter replacements, and fuel
-                system
-                cleanings contribute to smoother operation and improved fuel efficiency. Not only does this save you
-                money at the pump, but it also enhances the overall driving experience.
-            </p>
-
-        </div>
-        <div class="single-blog-list" data-aos="fade-up">
-            <h4 class="single-blog-title">4. Prevention is Cheaper Than Cure:</h4>
-            <p class="single-blog-desp">
-                Addressing minor issues during routine maintenance can save you from major, costly repairs down the
-                road. Ignoring warning signs or delaying maintenance might seem like a short-term cost-saving
-                measure,
-                but it often leads to more extensive and expensive problems. Invest in preventive maintenance to
-                avoid
-                unexpected breakdowns and repairs.
-            </p>
         </div>
         <div data-aos="fade-up">
             <div class="primary-color-border"></div>
@@ -446,9 +410,9 @@
             <div class="footer-content">
                 <div class="footer-info" data-aos="fade-up">
                     <p class="desp">Aksecories Headlamp Dan Spion Body Part Stir,Dll
-Modifikasi Headlamp Dan Spion Auto Retrack,
-Service Dan Restorsi, Elektrikal Dan LED 
-Menyediakan Berbagai Projecktor Biled DRL..</p>
+                        Modifikasi Headlamp Dan Spion Auto Retrack,
+                        Service Dan Restorsi, Elektrikal Dan LED
+                        Menyediakan Berbagai Projecktor Biled DRL..</p>
                     <div class="ak-height-35 ak-height-lg-30"></div>
                     <div class="d-flex align-items-center gap-3">
                         <div class="heartbeat-icon">
@@ -670,6 +634,305 @@ Menyediakan Berbagai Projecktor Biled DRL..</p>
     <script src="assets/js/plugins/swiper.min.js"></script>
     <script src="assets/js/plugins/SplitText.min.js"></script>
     <script src="assets/js/main.js"></script>
+
+    <script>
+        const db = firebase.database();
+
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Function to format date
+        function formatDate(timestamp) {
+            if (!timestamp) return '17.10.2023';
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Function to render specific blog content
+        function renderBlogDetail(blog) {
+            if (!blog) {
+                // If no blog found, show default content or redirect
+                console.log('Blog not found');
+                return;
+            }
+
+            // Update title
+            if (blog.title) {
+                document.querySelector('.time-title .title').textContent = blog.title;
+                document.title = blog.title + ' - Car Repair & Auto Services';
+            }
+
+            // Update date
+            if (blog.timestamp) {
+                document.querySelector('.time-title .time').textContent = formatDate(blog.timestamp);
+            }
+
+            // Update featured image
+            if (blog.imageUrl) {
+                const featuredImgContainer = document.getElementById('featured-blog-image');
+                if (featuredImgContainer) {
+                    // Clear existing content
+                    featuredImgContainer.innerHTML = '';
+                    
+                    // Create new image element
+                    const img = document.createElement('img');
+                    img.className = 'w-100';
+                    img.alt = blog.title || 'Blog Image';
+                    
+                    // Create new image to test if URL is valid
+                    const testImg = new Image();
+                    testImg.onload = function() {
+                        img.src = blog.imageUrl;
+                        featuredImgContainer.appendChild(img);
+                    };
+                    testImg.onerror = function() {
+                        console.log('Blog image failed to load, using default');
+                        img.src = 'assets/img/single-blog.jpg';
+                        img.alt = blog.title || 'Default Blog Image';
+                        featuredImgContainer.appendChild(img);
+                    };
+                    testImg.src = blog.imageUrl;
+                }
+            }
+
+            // Update description/intro
+            if (blog.description) {
+                const despElement = document.querySelector('.desp');
+                if (despElement) {
+                    despElement.textContent = blog.description;
+                }
+            }
+
+            // Update blog content sections
+            if (blog.content) {
+                const contentSections = document.querySelectorAll('.single-blog-list');
+                
+                // Clear existing content except comment section
+                contentSections.forEach((section, index) => {
+                    if (section.querySelector('.single-blog-title') && 
+                        !section.querySelector('.single-blog-title').textContent.includes('Comment')) {
+                        section.remove();
+                    }
+                });
+
+                // If content is an array of sections
+                if (Array.isArray(blog.content)) {
+                    // Find comment section to insert before it
+                    let insertPoint = null;
+                    const singleBlogLists = document.querySelectorAll('.single-blog-list');
+                    
+                    for (let section of singleBlogLists) {
+                        const titleElement = section.querySelector('.single-blog-title');
+                        if (titleElement && titleElement.textContent.includes('Comment')) {
+                            insertPoint = section;
+                            break;
+                        }
+                    }
+                    
+                    // Fallback to any element with data-aos
+                    if (!insertPoint) {
+                        insertPoint = document.querySelector('[data-aos="fade-up"]');
+                    }
+                    
+                    blog.content.forEach((contentItem, index) => {
+                        const sectionHtml = `
+                            <div class="single-blog-list" data-aos="fade-up">
+                                <h4 class="single-blog-title">${contentItem.title || `${index + 1}. Section ${index + 1}`}</h4>
+                                <p class="single-blog-desp">${contentItem.content || contentItem}</p>
+                            </div>
+                        `;
+                        
+                        if (insertPoint) {
+                            insertPoint.insertAdjacentHTML('beforebegin', sectionHtml);
+                        }
+                    });
+                } else if (typeof blog.content === 'string') {
+                    // If content is a single string, replace the main description
+                    const despElement = document.querySelector('.desp');
+                    if (despElement) {
+                        despElement.innerHTML = blog.content.replace(/\n/g, '<br>');
+                    }
+                }
+            }
+
+            // Update author if available
+            if (blog.author) {
+                // Add author info if it doesn't exist
+                const timeTitle = document.querySelector('.time-title');
+                const authorElement = timeTitle.querySelector('.author-info');
+                if (!authorElement && timeTitle) {
+                    const authorHtml = `<p class="author-info" style="margin-top: 10px; color: #666;">By ${blog.author}</p>`;
+                    timeTitle.insertAdjacentHTML('beforeend', authorHtml);
+                }
+            }
+        }
+
+        // Function to load blog from Firebase
+        function loadBlog(slug, id, index) {
+            // Show loading state
+            const title = document.querySelector('.time-title .title');
+            if (title) title.textContent = 'Loading...';
+
+            if (slug) {
+                // Query blogs by slug
+                db.ref('blogs').orderByChild('slug').equalTo(slug).once('value', function(snapshot) {
+                    const blogs = snapshot.val();
+                    
+                    if (blogs) {
+                        // Get the first (and should be only) matching blog
+                        const blogKey = Object.keys(blogs)[0];
+                        const blog = blogs[blogKey];
+                        renderBlogDetail(blog);
+                    } else {
+                        showBlogNotFound();
+                    }
+                }).catch(function(error) {
+                    console.error('Error loading blog by slug:', error);
+                    showErrorMessage();
+                });
+            } else if (id) {
+                // Query blogs by ID
+                db.ref('blogs').orderByChild('id').equalTo(id).once('value', function(snapshot) {
+                    const blogs = snapshot.val();
+                    
+                    if (blogs) {
+                        const blogKey = Object.keys(blogs)[0];
+                        const blog = blogs[blogKey];
+                        renderBlogDetail(blog);
+                    } else {
+                        showBlogNotFound();
+                    }
+                }).catch(function(error) {
+                    console.error('Error loading blog by ID:', error);
+                    showErrorMessage();
+                });
+            } else if (index !== null && index !== undefined) {
+                // Get blog by index
+                db.ref('blogs').once('value', function(snapshot) {
+                    const blogs = snapshot.val();
+                    
+                    if (blogs) {
+                        const blogArray = Array.isArray(blogs) ? blogs : Object.values(blogs);
+                        const blog = blogArray[parseInt(index)];
+                        
+                        if (blog) {
+                            renderBlogDetail(blog);
+                        } else {
+                            showBlogNotFound();
+                        }
+                    } else {
+                        showBlogNotFound();
+                    }
+                }).catch(function(error) {
+                    console.error('Error loading blog by index:', error);
+                    showErrorMessage();
+                });
+            } else {
+                // No parameter provided, keep default content
+                console.log('No blog parameter provided, showing default content');
+                return;
+            }
+        }
+
+        // Function to show blog not found message
+        function showBlogNotFound() {
+            const title = document.querySelector('.time-title .title');
+            if (title) title.textContent = 'Blog tidak ditemukan';
+            
+            const desp = document.querySelector('.desp');
+            if (desp) desp.textContent = 'Maaf, blog yang Anda cari tidak ditemukan.';
+        }
+
+        // Function to show error message
+        function showErrorMessage() {
+            const title = document.querySelector('.time-title .title');
+            if (title) title.textContent = 'Error loading blog';
+            
+            const desp = document.querySelector('.desp');
+            if (desp) desp.textContent = 'Terjadi kesalahan saat memuat blog.';
+        }
+
+        // Function to load default image from Firebase
+        function loadDefaultImageFromFirebase() {
+            db.ref('blogs').limitToFirst(1).once('value', function(snapshot) {
+                const blogs = snapshot.val();
+                if (blogs) {
+                    const firstBlog = Object.values(blogs)[0];
+                    if (firstBlog && firstBlog.imageUrl) {
+                        const featuredImgContainer = document.getElementById('featured-blog-image');
+                        if (featuredImgContainer) {
+                            // Clear existing content
+                            featuredImgContainer.innerHTML = '';
+                            
+                            // Create new image element
+                            const img = document.createElement('img');
+                            img.className = 'w-100';
+                            img.alt = 'Featured Blog Image';
+                            
+                            // Create new image to test if URL is valid
+                            const testImg = new Image();
+                            testImg.onload = function() {
+                                img.src = firstBlog.imageUrl;
+                                featuredImgContainer.appendChild(img);
+                            };
+                            testImg.onerror = function() {
+                                console.log('Firebase image failed to load, using default');
+                                img.src = 'assets/img/single-blog.jpg';
+                                img.alt = 'Default Blog Image';
+                                featuredImgContainer.appendChild(img);
+                            };
+                            testImg.src = firstBlog.imageUrl;
+                        }
+                    }
+                } else {
+                    // If no blogs found, load default image
+                    console.log('No blogs found, loading default image');
+                    const featuredImgContainer = document.getElementById('featured-blog-image');
+                    if (featuredImgContainer) {
+                        featuredImgContainer.innerHTML = '';
+                        const img = document.createElement('img');
+                        img.src = 'assets/img/single-blog.jpg';
+                        img.className = 'w-100';
+                        img.alt = 'Default Blog Image';
+                        featuredImgContainer.appendChild(img);
+                    }
+                }
+            }).catch(function(error) {
+                console.error('Error loading default image:', error);
+                const featuredImgContainer = document.getElementById('featured-blog-image');
+                if (featuredImgContainer) {
+                    featuredImgContainer.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = 'assets/img/single-blog.jpg';
+                    img.className = 'w-100';
+                    img.alt = 'Default Blog Image';
+                    featuredImgContainer.appendChild(img);
+                }
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const slug = getUrlParameter('slug');
+            const id = getUrlParameter('id');
+            const index = getUrlParameter('index');
+            
+            // Load blog based on available parameters
+            if (slug || id || index !== null) {
+                loadBlog(slug, id, index);
+            } else {
+                // If no parameters, load default image from Firebase
+                loadDefaultImageFromFirebase();
+            }
+        });
+    </script>
 </body>
 
 </html>
