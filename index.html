@@ -16,6 +16,23 @@
     <link rel="stylesheet" href="assets/css/plugins/aos.css" />
     <link rel="stylesheet" href="assets/css/plugins/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuV49MOc4OAFOBLJEUd-6bVEr6XCWWfkA",
+            authDomain: "preset-62582.firebaseapp.com",
+            databaseURL: "https://preset-62582-default-rtdb.firebaseio.com",
+            projectId: "preset-62582",
+            storageBucket: "preset-62582.appspot.com",
+            messagingSenderId: "227329859828",
+            appId: "1:227329859828:web:b29f91c926b9c726cabea1"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+    </script>
 </head>
 
 <body>
@@ -103,12 +120,8 @@
                                             <a href="video-gallery.html" class="text-hover-animaiton">Video Gallery </a>
                                         </li>
                                         <li>
-                                            <a href="video-gallery.html" class="text-hover-animaiton">Video Gallery </a>
-                                        </li>
-                                        <li>
                                             <a href="faq.html" class="text-hover-animaiton">Faq</a>
                                         </li>
-                                        
                                     </ul>
                                 </li>
                                 <li>
@@ -1169,11 +1182,8 @@ Semua pengerjaan dalam layanan ini dilindungi garansi dan didukung layanan purna
         <div class="ak-height-100 ak-height-lg-80"></div>
     </div>
     <!-- End Pricing -->
-
-
-    <!-- Start Blog -->
-    <div class="ak-height-125 ak-height-lg-80"></div>
-    <div class="container">
+<div class="ak-height-75 ak-height-lg-80"></div>
+    <section class="container">
         <div class="center-section-heading" data-aos="fade-up">
             <div class="ak-section-heading ak-style-1">
                 <div class="background-text" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000">BlogNews
@@ -1185,72 +1195,16 @@ Semua pengerjaan dalam layanan ini dilindungi garansi dan didukung layanan purna
                 </div>
             </div>
         </div>
-        <div class="ak-height-50 ak-height-lg-50"></div>
-        <div class="row row-cols-1 row-cols-md-1 row-cols-lg-3 g-5 g-lg-4">
-            <div class="col">
-                <div class="h-100">
-                    <div class="blog-card" data-aos="fade-up" data-aos-delay="100">
-                        <a href="blog-single.html">
-                            <div class="blog-header-info">
-                                <img src="assets/img/blog_3.jpg" alt="...">
-                            </div>
-                        </a>
-                        <div class="blog-body-info">
-                            <p class="blog-text">17.10.2023</p>
-                            <a href="blog-single.html" class="blog-title">
-                                The Importance of Regular Car<br>
-                                Maintenance
-                            </a>
-                        </div>
-                        <div class="blog-footer-info">
-                            <a href="blog-single.html" class="more-btn">READ MORE</a>
-                        </div>
+    </section>
 
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="blog-card" data-aos="fade-up" data-aos-delay="100">
-                        <a href="blog-single.html">
-                            <div class="blog-header-info">
-                                <img src="assets/img/blog_1.jpg" alt="...">
-                            </div>
-                        </a>
-                        <div class="blog-body-info">
-                            <p class="blog-text">05.11.2023</p>
-                            <a href="blog-single.html" class="blog-title">The Roadmap to Reliability: Essential <br>
-                                Car Care
-                                Tips</a>
-                        </div>
-                        <div class="blog-footer-info">
-                            <a href="blog-single.html" class="more-btn">READ MORE</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="blog-card" data-aos="fade-up" data-aos-delay="100">
-                        <a href="blog-single.html">
-                            <div class="blog-header-info">
-                                <img src="assets/img/blog_2.jpg" alt="...">
-                            </div>
-                        </a>
-                        <div class="blog-body-info">
-                            <p class="blog-text">12.11.2023</p>
-                            <a href="blog-single.html" class="blog-title">From Garage to Glory: Transform Your
-                                <br>Vehicle's Health
-                            </a>
-                        </div>
-                        <div class="blog-footer-info">
-                            <a href="blog-single.html" class="more-btn">READ MORE</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+    <!-- Start Blog -->
+    <div class="ak-height-50 ak-height-lg-50"></div>
+    <div class="container">
+        <div id="blog-list" class="row row-cols-1 row-cols-md-1 row-cols-lg-3 g-5 g-lg-4 pagination-wrapper">
+            <div></div>
         </div>
+        <div class="ak-height-100 ak-height-lg-60"></div>
+        <!-- <div id="pagination-container" class="pagination-style"></div> -->
     </div>
     <!-- End Blog -->
 
@@ -1520,6 +1474,121 @@ Menyediakan Berbagai Projecktor Biled DRL..</p>
     <script src="assets/js/plugins/swiper.min.js"></script>
     <script src="assets/js/plugins/SplitText.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        const db = firebase.database();
+
+        // Update featured blog section dengan blog terbaru
+        function updateFeaturedBlog(blogs) {
+            if (!blogs) return;
+            
+            // Jika blogs berupa objek, ubah ke array
+            const blogArray = Array.isArray(blogs) ? blogs : Object.values(blogs);
+            if (blogArray.length === 0) return;
+            
+            // Cari blog dengan timestamp terbaru
+            const latestBlog = blogArray.reduce((latest, current) => {
+                const latestTime = latest.timestamp || 0;
+                const currentTime = current.timestamp || 0;
+                return currentTime > latestTime ? current : latest;
+            });
+            
+            // Update featured blog section
+            const featuredDate = document.querySelector('.blog-feature .feature-content .data');
+            const featuredTitle = document.querySelector('.blog-feature .feature-content .title');
+            const featuredDesc = document.querySelector('.blog-feature .feature-content .desp');
+            const featuredLink = document.querySelector('.blog-feature .feature-content .more-btn');
+            const featuredImg = document.querySelector('.blog-feature .feature-img img');
+            
+            if (featuredDate && featuredTitle && featuredDesc && featuredLink && featuredImg) {
+                const date = new Date(latestBlog.timestamp || Date.now()).toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+                
+                let link = 'blog-single.html';
+                if (latestBlog.slug) {
+                    link = `blog-single.html?slug=${encodeURIComponent(latestBlog.slug)}`;
+                } else if (latestBlog.id) {
+                    link = `blog-single.html?id=${encodeURIComponent(latestBlog.id)}`;
+                }
+                
+                featuredDate.textContent = date;
+                featuredTitle.textContent = latestBlog.title || 'No Title';
+                featuredDesc.textContent = latestBlog.description || 'No description available';
+                featuredLink.href = link;
+                featuredImg.src = latestBlog.imageUrl || 'assets/img/blog-show.jpg';
+                featuredImg.alt = latestBlog.title || 'Featured Blog';
+            }
+        }
+
+        // Ambil data dari Realtime Database 'blogs' dan render ke halaman
+        function renderBlogs(blogs) {
+            const blogList = document.getElementById('blog-list');
+            blogList.innerHTML = '';
+            if (!blogs) {
+                blogList.innerHTML = '<div class="col"><p>Tidak ada blog tersedia.</p></div>';
+                return;
+            }
+            // Jika blogs berupa objek, ubah ke array
+            const blogArray = Array.isArray(blogs) ? blogs : Object.values(blogs);
+            if (blogArray.length === 0) {
+                blogList.innerHTML = '<div class="col"><p>Tidak ada blog tersedia.</p></div>';
+                return;
+            }
+            blogArray.forEach(function(blog, index) {
+                const img = blog.imageUrl || 'assets/img/blog_4.jpg';
+                const timestamp = blog.timestamp || Date.now();
+                const date = new Date(timestamp).toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+                const title = blog.title || 'No Title';
+                const description = blog.description || '';
+                
+                // Create link with slug if available, otherwise use index or ID
+                let link = 'blog-single.html';
+                if (blog.slug) {
+                    link = `blog-single.html?slug=${encodeURIComponent(blog.slug)}`;
+                } else if (blog.id) {
+                    link = `blog-single.html?id=${encodeURIComponent(blog.id)}`;
+                } else {
+                    // Fallback to index-based link
+                    link = `blog-single.html?index=${index}`;
+                }
+                
+                const card = `
+                <div class="col">
+                    <div class="blog-card">
+                        <a href="${link}">
+                            <div class="blog-header-info">
+                                <img src="${img}" alt="${title}">
+                            </div>
+                        </a>
+                        <div class="blog-body-info">
+                            <p class="blog-text">${date}</p>
+                            <a href="${link}" class="blog-title">${title}</a>
+                        </div>
+                        <div class="blog-footer-info">
+                            <a href="${link}" class="more-btn">READ MORE</a>
+                        </div>
+                    </div>
+                </div>
+                `;
+                blogList.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        // Loader sementara
+        document.getElementById('blog-list').innerHTML = '<div class="col"><p>Loading...</p></div>';
+
+        db.ref('blogs').once('value', function (snapshot) {
+            const blogsData = snapshot.val();
+            updateFeaturedBlog(blogsData); // Update featured blog section
+            renderBlogs(blogsData); // Render blog list
+        });
+    </script>
 </body>
 
 </html>
